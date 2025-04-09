@@ -21,12 +21,13 @@ module Bummr
 
       updated_version = updated_version_for(gem)
 
+      # If the gem could not be updated at all
       if gem[:installed] == updated_version
         log("#{gem[:name]} not updated")
-        return
-      end
+        # might still be dependency updates, so cannot stop here
 
-      if gem[:newest] != updated_version
+      # If the gem was updated, but not to latest
+      elsif gem[:newest] != updated_version
         log("#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}")
       end
 
