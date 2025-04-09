@@ -21,12 +21,6 @@ module Bummr
 
       updated_version = updated_version_for(gem)
 
-      message = if updated_version
-        "Update #{gem[:name]} from #{gem[:installed]} to #{updated_version}"
-      else
-        "Update dependencies for #{gem[:name]}"
-      end
-
       if gem[:installed] == updated_version
         log("#{gem[:name]} not updated")
         return
@@ -39,6 +33,13 @@ module Bummr
       git.add("Gemfile")
       git.add("Gemfile.lock")
       git.add("vendor/cache")
+
+      # When the targeted gem itself is not modified, one of its dependencies must have been
+      if gem[:installed] == updated_version
+        message = "Update #{gem[:name]} dependencies"
+      else
+        message = "Update #{gem[:name]} from #{gem[:installed]} to #{updated_version}"
+      end
       git.commit(message)
     end
 
