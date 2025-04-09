@@ -11,6 +11,11 @@ module Bummr
       system("git add #{files}")
     end
 
+    def files_staged?
+      # exit code 1 when there are files staged for commit
+      !system("git diff --staged --quiet")
+    end
+
     def commit(message)
       log "Commit: #{message}".color(:green)
       system("#{git_commit} -m '#{message}'")
