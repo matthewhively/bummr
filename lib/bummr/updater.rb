@@ -17,7 +17,13 @@ module Bummr
 
     def update_gem(gem, index)
       puts "Updating #{gem[:name]}: #{index + 1} of #{@outdated_gems.count}"
-      system("bundle update #{gem[:name]}")
+      # Reduce STDOUT with filter
+      tmp = %x{bundle update #{gem[:name]} 2>&1}
+      tmp.split("\n").grep(/^(Installing|Using)/).each do |x|
+        a = x.split(" (")
+        # recolorize
+        puts "¦--> #{a[0]}" + " (#{a[1]}".color(:green)
+      end
 
       # Get the current (maybe new?) bundled version for this gem
       bundled_version = bundled_version_for(gem)
