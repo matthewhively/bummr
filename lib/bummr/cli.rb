@@ -51,6 +51,7 @@ module Bummr
         else
           Bummr::Updater.new(outdated_gems).update_gems
 
+          press_any_key("Press any key to start an interactive rebase to adjust the updated gem commits...")
           git.rebase_interactive(BASE_BRANCH)
 
           test unless TEST_COMMAND.empty?
