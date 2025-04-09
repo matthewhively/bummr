@@ -34,6 +34,9 @@ module Bummr
       git.add("Gemfile.lock")
       git.add("vendor/cache")
 
+      return unless git.files_staged?
+      # ... something was changed
+
       # When the targeted gem itself is not modified, one of its dependencies must have been
       if gem[:installed] == updated_version
         message = "Update #{gem[:name]} dependencies"

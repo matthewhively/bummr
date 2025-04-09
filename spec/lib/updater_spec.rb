@@ -102,6 +102,7 @@ describe Bummr::Updater do
 
         allow(updater).to receive(:system)
         allow(git).to receive(:add)
+        allow(git).to receive(:files_staged?).and_return true
         mock_log_commit_puts
 
         updater.update_gem(gem, 0)
@@ -124,6 +125,7 @@ describe Bummr::Updater do
 
         allow(updater).to receive(:system)
         allow(git).to receive(:add)
+        allow(git).to receive(:files_staged?).and_return true
         mock_log_commit_puts
 
         updater.update_gem(gem, 0)
