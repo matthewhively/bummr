@@ -145,13 +145,13 @@ describe Bummr::CLI do
 
     context "build passes" do
       it "reports that it passed the build, does not bisect" do
-        allow(cli).to receive(:system).with("bundle exec rake").and_return true
+        allow(cli).to receive(:system).with(Bummr::BUNDLE_EXEC_RAKE).and_return true
 
         cli.test
 
         expect(cli).to have_received(:check).with(false)
         expect(cli).to have_received(:system).with(Bummr::BUNDLE_INSTALL_CMD)
-        expect(cli).to have_received(:system).with("bundle exec rake")
+        expect(cli).to have_received(:system).with(Bummr::BUNDLE_EXEC_RAKE)
         expect(cli).not_to have_received(:bisect)
       end
     end
@@ -164,7 +164,7 @@ describe Bummr::CLI do
 
         expect(cli).to have_received(:check).with(false)
         expect(cli).to have_received(:system).with(Bummr::BUNDLE_INSTALL_CMD)
-        expect(cli).to have_received(:system).with("bundle exec rake")
+        expect(cli).to have_received(:system).with(Bummr::BUNDLE_EXEC_RAKE)
         expect(cli).to have_received(:bisect)
       end
     end
