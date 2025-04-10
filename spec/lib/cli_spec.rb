@@ -39,7 +39,7 @@ describe Bummr::CLI do
         expect(cli).to receive(:yes?).and_return(true)
         expect(cli).to receive(:check)
         expect(cli).to receive(:log)
-        expect(cli).to receive(:system).with("bundle install")
+        expect(cli).to receive(:system).with(Bummr::BUNDLE_INSTALL_CMD)
         expect(Bummr::Updater).to receive(:new).with(outdated_gems).and_return updater
         expect(cli).to receive(:test)
         expect(git).to receive(:rebase_interactive).with(BASE_BRANCH)
@@ -54,7 +54,7 @@ describe Bummr::CLI do
           expect(cli).to receive(:yes?).and_return(true)
           expect(cli).to receive(:check)
           expect(cli).to receive(:log)
-          expect(cli).to receive(:system).with("bundle install")
+          expect(cli).to receive(:system).with(Bummr::BUNDLE_INSTALL_CMD)
           expect(cli).to receive(:puts).with("No outdated gems to update".color(:green))
 
           cli.update
@@ -125,7 +125,7 @@ describe Bummr::CLI do
           expect(cli).to receive(:display_info)
           expect(cli).to receive(:check)
           expect(cli).to receive(:log)
-          expect(cli).to receive(:system).with("bundle install")
+          expect(cli).to receive(:system).with(Bummr::BUNDLE_INSTALL_CMD)
           expect(cli).to receive(:puts).with("No outdated gems to update".color(:green))
 
           cli.update
@@ -150,7 +150,7 @@ describe Bummr::CLI do
         cli.test
 
         expect(cli).to have_received(:check).with(false)
-        expect(cli).to have_received(:system).with("bundle install")
+        expect(cli).to have_received(:system).with(Bummr::BUNDLE_INSTALL_CMD)
         expect(cli).to have_received(:system).with("bundle exec rake")
         expect(cli).not_to have_received(:bisect)
       end
@@ -163,7 +163,7 @@ describe Bummr::CLI do
         cli.test
 
         expect(cli).to have_received(:check).with(false)
-        expect(cli).to have_received(:system).with("bundle install")
+        expect(cli).to have_received(:system).with(Bummr::BUNDLE_INSTALL_CMD)
         expect(cli).to have_received(:system).with("bundle exec rake")
         expect(cli).to have_received(:bisect)
       end

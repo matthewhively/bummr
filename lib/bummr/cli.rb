@@ -28,7 +28,7 @@ module Bummr
     method_option :gem, type: :string
 
     def update
-      system("bundle install")
+      system(Bummr::BUNDLE_INSTALL_CMD)
       display_info
 
       if yes? "Are you ready to use Bummr? (y/n)"
@@ -57,7 +57,7 @@ module Bummr
       check(false)
 
       if yes? "Do you want to test the build now? (y/n)"
-        system "bundle install"
+        system(Bummr::BUNDLE_INSTALL_CMD)
         puts "Testing the build!".color(:green)
 
         if system(TEST_COMMAND) == false
