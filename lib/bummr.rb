@@ -1,4 +1,5 @@
 # grouped by dependency order than alpha
+require 'bummr/constants'
 require 'bummr/log'
 require 'bummr/prompt'
 require "bummr/scm"
