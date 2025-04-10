@@ -31,6 +31,10 @@ module Bummr
       # If the gem was updated, but not to latest
       elsif gem[:newest] != bundled_version
         log("Newer #{gem[:name]} installed".color(:yellow) + " - updated from #{gem[:installed]} to #{bundled_version}" + " (latest: #{gem[:newest]})".color(:green))
+
+      # Is using the latest version
+      else
+        log("Latest #{gem[:name]} installed - updated from #{gem[:installed]} to #{bundled_version.color(:green)}")
       end
 
       git.add("Gemfile")
