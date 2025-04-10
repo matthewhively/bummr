@@ -1,3 +1,3 @@
 module Bummr
- BUNDLE_INSTALL_CMD="bundle install".freeze
+ BUNDLE_INSTALL_CMD="bundle install --quiet".freeze
 end
