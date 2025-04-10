@@ -7,7 +7,7 @@ module Bummr
       @outdated_gems = outdated_gems
     end
 
-    def update_gems
+    def update_outdated_gems
       puts "Updating outdated gems".color(:green)
 
       @outdated_gems.each_with_index do |gem, index|

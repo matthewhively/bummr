@@ -33,7 +33,7 @@ describe Bummr::CLI do
     context "when user agrees to move forward" do
       def mock_bummr_standard_flow
         updater = double
-        allow(updater).to receive(:update_gems)
+        allow(updater).to receive(:update_outdated_gems)
 
         expect(cli).to receive(:display_info)
         expect(cli).to receive(:yes?).and_return(true)

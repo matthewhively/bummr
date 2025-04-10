@@ -43,7 +43,7 @@ module Bummr
         if outdated_gems.empty?
           puts "No outdated gems to update".color(:green)
         else
-          Bummr::Updater.new(outdated_gems).update_gems
+          Bummr::Updater.new(outdated_gems).update_outdated_gems
 
           git.rebase_interactive(BASE_BRANCH)
           test

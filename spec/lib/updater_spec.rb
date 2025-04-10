@@ -20,12 +20,12 @@ describe Bummr::Updater do
   let(:update_cmd) { "bundle update #{gem[:name]}" }
   let(:git) { Bummr::Git.instance }
 
-  describe "#update_gems" do
+  describe "#update_outdated_gems" do
     it "calls update_gem on each gem" do
       allow(updater).to receive(:update_gem)
       allow(updater).to receive(:puts) # NOOP this function call
 
-      updater.update_gems
+      updater.update_outdated_gems
 
       outdated_gems.each_with_index do |gem, index|
         expect(updater).to have_received(:update_gem).with(gem, index)
