@@ -44,6 +44,12 @@ module Bummr
 
     def updated_version_for(gem)
       string = %x{bundle list --paths | grep "#{gem[:name]}"}
+      if string.empty?
+        # :nocov: We don't need to test when an exception happens
+        # Raise a understandable error message
+        raise "FATAL: Unable to find '#{gem[:name]}' within 'bundle list --paths'."
+        # :nocov: end
+      end
       string.match(/#{gem[:name]}-(.*)$/)[1]
     end
   end
