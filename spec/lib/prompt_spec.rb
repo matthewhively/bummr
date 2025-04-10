@@ -42,6 +42,7 @@ describe Bummr::Prompt do
 
     context "when HEADLESS is true" do
       it "returns true and skips asking for user input" do
+        allow(STDOUT).to receive(:puts) # NOOP this particular case
         stub_const("HEADLESS", true)
 
         expect(
