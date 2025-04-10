@@ -39,6 +39,7 @@ describe Bummr::CLI do
         expect(cli).to receive(:yes?).and_return(true)
         expect(cli).to receive(:check)
         expect(cli).to receive(:log)
+        expect(cli).to receive(:press_any_key) # NOOP this function call
         expect(cli).to receive(:system).with("bundle install")
         expect(Bummr::Updater).to receive(:new).with(outdated_gems).and_return updater
         expect(cli).to receive(:test)
