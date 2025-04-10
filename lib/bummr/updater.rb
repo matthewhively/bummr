@@ -16,7 +16,8 @@ module Bummr
     end
 
     def update_gem(gem, index)
-      puts "Updating #{gem[:name]}: #{index + 1} of #{@outdated_gems.count}"
+      puts "------------\nUpdating #{gem[:name]}: #{index + 1} of #{@outdated_gems.count}"
+
       system("bundle update #{gem[:name]}")
 
       # Get the current (maybe new?) bundled version for this gem
