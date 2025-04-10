@@ -26,7 +26,7 @@ describe Bummr::Git do
       git.commit(commit_message)
 
       expect(git).to have_received(:log).with(
-        /Commit: #{commit_message}/
+        %Q|Commit: "#{commit_message}"|
       )
     end
 
