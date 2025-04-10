@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bummr (1.2.0)
+    bummr (1.2.1)
       rainbow
       thor
 
