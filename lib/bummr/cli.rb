@@ -46,7 +46,8 @@ module Bummr
           Bummr::Updater.new(outdated_gems).update_outdated_gems
 
           git.rebase_interactive(BASE_BRANCH)
-          test
+
+          test unless TEST_COMMAND.empty?
         end
       else
         puts "Thank you!".color(:green)
@@ -99,8 +100,10 @@ module Bummr
       puts "- Have your build configured to fail fast (recommended)"
       puts "- Have locked any Gem version that you don't wish to update in your Gemfile"
       puts "- It is recommended that you lock your versions of 'ruby' and 'rails' in your 'Gemfile'"
-      puts "\n"
-      puts "Your test command is: " + "'#{TEST_COMMAND}'".color(:yellow)
+      unless TEST_COMMAND.empty?
+        puts "\n"
+        puts "Your test command is: " + "'#{TEST_COMMAND}'".color(:yellow)
+      end
       puts "\n"
       print_received_options
     end
