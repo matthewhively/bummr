@@ -139,6 +139,15 @@ describe Bummr::Updater do
         mock_system_log_commit_puts
       end
 
+      it "logs that was updated to the latest" do
+        latest_message =
+          "Latest #{gem[:name]} installed - updated from #{gem[:installed]} to #{gem[:newest]}"
+
+        updater.update_gem(gem, 0)
+
+        expect(updater).to have_received(:log).with(latest_message)
+      end
+
       it "commits" do
         commit_message =
           "Update #{gem[:name]} from #{gem[:installed]} to #{gem[:newest]}"
