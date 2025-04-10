@@ -15,13 +15,14 @@ module Bummr
     end
     # :nocov: end
 
-    desc "update",
-      "Update outdated gems, run tests, bisect if tests fail\n\n" +
-      "--all: Update indirect dependencies\n" +
-      "--group: Specify a group from the Gemfile to update\n" +
-      "--gem: Specify a specific gem to update\n" +
-      "\n"
-
+    desc "update", "Update outdated gems, run tests, bisect if tests fail (options: --all, --group, --gem)"
+    long_desc <<-LONGDESC
+      Update outdated gems > Interactive rebase to pick-and-choose finalized gem updates > Run tests > Bisect if any test fails
+      \x5Options:
+      \x5 --all:   Update indirect dependencies
+      \x5 --group: Specify a group from the Gemfile to update
+      \x5 --gem:   Specify a specific gem to update
+    LONGDESC
 
     method_option :all, type: :boolean, default: false
     method_option :group, type: :string
