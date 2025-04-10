@@ -1,3 +1,3 @@
 module Bummr
-  VERSION = "1.1.1a"
+  VERSION = "1.1.1c"
 end
