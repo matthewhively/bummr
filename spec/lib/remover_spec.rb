@@ -22,7 +22,7 @@ describe Bummr::Remover do
       remover.remove_commit(sha)
 
       expect(remover).to have_received(:log).with(
-        "Bad commit: commit message, #{sha}".color(:red)
+        "Bad commit: commit message, #{sha}"
       )
     end
 
