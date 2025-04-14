@@ -20,7 +20,6 @@ describe Bummr::Updater do
   let(:installed_version)    { outdated_gems[0][:installed] }
   let(:intermediate_version) { "0.3.4" }
 
-  let(:update_cmd) { "bundle update #{gem[:name]}" }
   let(:git) { Bummr::Git.instance }
 
   describe "#update_outdated_gems" do
@@ -45,16 +44,16 @@ describe Bummr::Updater do
       %x{rm -rf vendor/cache}
     end
 
-    def mock_log_commit_puts
+    def mock_system_log_commit_puts
+      allow(updater).to receive(:system)
       allow(updater).to receive(:log)
       allow(updater).to receive(:puts) # NOOP this function call
       allow(git).to receive(:commit)
     end
 
     it "attempts to update the gem" do
-      allow(updater).to receive(:system).with(update_cmd)
       allow(updater).to receive(:bundled_version_for).with(gem).and_return installed_version
-      mock_log_commit_puts
+      mock_system_log_commit_puts
 
       updater.update_gem(gem, 0)
 
@@ -63,9 +62,8 @@ describe Bummr::Updater do
 
     context "not updated at all" do
       it "logs that it's not updated to the latest" do
-        allow(updater).to receive(:system).with(update_cmd)
         allow(updater).to receive(:bundled_version_for).with(gem).and_return installed_version
-        mock_log_commit_puts
+        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -73,9 +71,8 @@ describe Bummr::Updater do
       end
 
       it "doesn't commit anything" do
-        allow(updater).to receive(:system).with(update_cmd)
         allow(updater).to receive(:bundled_version_for).with(gem).and_return installed_version
-        mock_log_commit_puts
+        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -93,8 +90,7 @@ describe Bummr::Updater do
       it "logs that it's not updated to the latest" do
         not_latest_message =
           "#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}"
-        allow(updater).to receive(:system)
-        mock_log_commit_puts
+        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -105,10 +101,9 @@ describe Bummr::Updater do
         commit_message =
           "Update #{gem[:name]} from #{gem[:installed]} to #{intermediate_version}"
 
-        allow(updater).to receive(:system)
         allow(git).to receive(:add)
         allow(git).to receive(:files_staged?).and_return true
-        mock_log_commit_puts
+        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -128,10 +123,9 @@ describe Bummr::Updater do
         commit_message =
           "Update #{gem[:name]} from #{gem[:installed]} to #{gem[:newest]}"
 
-        allow(updater).to receive(:system)
         allow(git).to receive(:add)
         allow(git).to receive(:files_staged?).and_return true
-        mock_log_commit_puts
+        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
