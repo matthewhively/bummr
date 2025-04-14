@@ -11,6 +11,8 @@ module Bummr
       system("git add #{files}")
     end
 
+    # NOTE: during active development this will catch any other files you may be working on
+    #       so don't leave random files staged without committing them
     def files_staged?
       # exit code 1 when there are files staged for commit
       !system("git diff --staged --quiet")
