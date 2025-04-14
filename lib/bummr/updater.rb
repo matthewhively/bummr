@@ -16,7 +16,7 @@ module Bummr
     end
 
     def update_gem(gem, index)
-      puts "------------\nUpdating #{gem[:name]}: #{index + 1} of #{@outdated_gems.count}"
+      puts "------------\nUpdating #{gem[:name].color(:magenta)}: #{index + 1} of #{@outdated_gems.count}"
 
       system("bundle update #{gem[:name]}")
 
@@ -25,12 +25,12 @@ module Bummr
 
       # If the gem could not be updated at all
       if gem[:installed] == bundled_version
-        log("#{gem[:name]} not updated")
+        log("Updating #{gem[:name]} cannot be completed".color(:yellow))
         # might still be dependency updates, so cannot stop here
 
       # If the gem was updated, but not to latest
       elsif gem[:newest] != bundled_version
-        log("#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}")
+        log("Newer #{gem[:name]} installed".color(:yellow) + " - updated from #{gem[:installed]} to #{bundled_version}" + " (latest: #{gem[:newest]})".color(:green))
       end
 
       git.add("Gemfile")
