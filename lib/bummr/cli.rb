@@ -8,6 +8,13 @@ module Bummr
     include Bummr::Prompt
     include Bummr::Scm
 
+    desc 'version', '(-v, --version) Display the current version of the gem'
+    map %w[-v --version] => :version
+
+    def version
+      puts "Bummr #{VERSION}"
+    end
+
     # :nocov: internals are tested by spec/check_spec.rb
     desc "check", "Run automated checks to see if bummr can be run"
     def check(fullcheck=true)
@@ -91,7 +98,7 @@ module Bummr
 
     # :nocov: This is stubbed out during actual testing because its boilerplate information for the user
     def display_info
-      puts "Bummr #{VERSION}"
+      puts version
       puts "To run Bummr, you must:"
       puts "- Be in the root path of a clean git branch off of " + "#{BASE_BRANCH}".color(:yellow)
       puts "- Have no commits or local changes"
