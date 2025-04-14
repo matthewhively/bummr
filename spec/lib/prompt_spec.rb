@@ -5,6 +5,7 @@ describe Bummr::Prompt do
     puts "\n<< Bummr::Prompt >>\n"
   end
 
+  # Mock the parent class, so `super` has some effect (normally super calls Thor.yes?)
   let(:parent_class) do
     Class.new do
       def yes?(message)
@@ -20,6 +21,7 @@ describe Bummr::Prompt do
   end
 
   describe "#yes?" do
+
     context "when HEADLESS is false" do
       it "calls super" do
         stub_const("HEADLESS", false)
@@ -50,5 +52,7 @@ describe Bummr::Prompt do
         ).to eq true
       end
     end
-  end
+
+  end # describe "#yes?"
+
 end
