@@ -55,4 +55,38 @@ describe Bummr::Prompt do
 
   end # describe "#yes?"
 
+  describe "#press_any_key" do
+
+    context "when HEADLESS" do
+      it "does nothing" do
+        stub_const("HEADLESS", true)
+
+        allow(STDIN).to receive(:getch)
+
+        expect(
+          object.press_any_key("Press any key to continue...")
+        ).to eq nil
+        # TODO: is there a better way?
+
+        expect(STDIN).not_to have_received(:getch)
+      end
+    end
+
+    context "when not headless" do
+      it "prints message and waits for a keystroke" do
+        stub_const("HEADLESS", false)
+
+        # Fake the user pressing any key
+        allow(STDIN).to receive(:getch).and_return("a")
+
+        expect {
+          object.press_any_key("Press any key to continue...")
+        }.to output("\nPress any key to continue...\n").to_stdout
+
+        expect(STDIN).to have_received(:getch)
+      end
+    end
+
+  end # describe "#press_any_key"
+
 end
