@@ -19,15 +19,16 @@ module Bummr
       puts "Updating #{gem[:name]}: #{index + 1} of #{@outdated_gems.count}"
       system("bundle update #{gem[:name]}")
 
-      updated_version = updated_version_for(gem)
+      # Get the current (maybe new?) bundled version for this gem
+      bundled_version = bundled_version_for(gem)
 
       # If the gem could not be updated at all
-      if gem[:installed] == updated_version
+      if gem[:installed] == bundled_version
         log("#{gem[:name]} not updated")
         # might still be dependency updates, so cannot stop here
 
       # If the gem was updated, but not to latest
-      elsif gem[:newest] != updated_version
+      elsif gem[:newest] != bundled_version
         log("#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}")
       end
 
@@ -39,15 +40,16 @@ module Bummr
       # ... something was changed
 
       # When the targeted gem itself is not modified, one of its dependencies must have been
-      if gem[:installed] == updated_version
+      if gem[:installed] == bundled_version
         message = "Update #{gem[:name]} dependencies"
       else
-        message = "Update #{gem[:name]} from #{gem[:installed]} to #{updated_version}"
+        message = "Update #{gem[:name]} from #{gem[:installed]} to #{bundled_version}"
       end
       git.commit(message)
     end
 
-    def updated_version_for(gem)
+    # NOTE: cannot be private method because it is tested specifically by updater_spec.rb
+    def bundled_version_for(gem)
       string = %x{bundle list --paths | grep "#{gem[:name]}"}
       if string.empty?
         # :nocov: We don't need to test when an exception happens
