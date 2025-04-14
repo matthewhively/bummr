@@ -50,7 +50,7 @@ describe Bummr::Updater do
 
     it "attempts to update the gem" do
       allow(updater).to receive(:system).with(update_cmd)
-      allow(updater).to receive(:updated_version_for).with(gem).and_return installed
+      allow(updater).to receive(:bundled_version_for).with(gem).and_return installed
       mock_log_commit_puts
 
       updater.update_gem(gem, 0)
@@ -59,7 +59,7 @@ describe Bummr::Updater do
     context "not updated at all" do
       it "logs that it's not updated to the latest" do
         allow(updater).to receive(:system).with(update_cmd)
-        allow(updater).to receive(:updated_version_for).with(gem).and_return installed
+        allow(updater).to receive(:bundled_version_for).with(gem).and_return installed
         mock_log_commit_puts
 
         updater.update_gem(gem, 0)
@@ -69,7 +69,7 @@ describe Bummr::Updater do
 
       it "doesn't commit anything" do
         allow(updater).to receive(:system).with(update_cmd)
-        allow(updater).to receive(:updated_version_for).with(gem).and_return installed
+        allow(updater).to receive(:bundled_version_for).with(gem).and_return installed
         mock_log_commit_puts
 
         updater.update_gem(gem, 0)
@@ -80,7 +80,7 @@ describe Bummr::Updater do
 
     context "not updated to the newest version" do
       before(:each) do
-        allow(updater).to receive(:updated_version_for).with(gem).and_return(
+        allow(updater).to receive(:bundled_version_for).with(gem).and_return(
           intermediate_version
         )
       end
@@ -116,7 +116,7 @@ describe Bummr::Updater do
 
     context "updated the gem to the latest" do
       before(:each) do
-        allow(updater).to receive(:updated_version_for).and_return newest
+        allow(updater).to receive(:bundled_version_for).and_return newest
       end
 
       it "commits" do
@@ -138,13 +138,13 @@ describe Bummr::Updater do
     end
   end # end #update_gem
 
-  describe "#updated_version_for" do
+  describe "#bundled_version_for" do
     it "returns the correct version from bundle list" do
       allow(updater).to receive(:`).with(
         "bundle list --paths | grep \"#{gem[:name]}\""
       ).and_return("asdf/asdf/asdf/#{gem[:name]}-3.5.2")
 
-      expect(updater.updated_version_for(gem)).to eq "3.5.2"
+      expect(updater.bundled_version_for(gem)).to eq "3.5.2"
     end
   end
 end
