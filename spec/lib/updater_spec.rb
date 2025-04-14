@@ -35,6 +35,8 @@ describe Bummr::Updater do
     end
   end
 
+  # ----------------
+
   describe "#update_gem" do
     # Ensure this directory exists to be added
     before do
@@ -60,37 +62,34 @@ describe Bummr::Updater do
       # NOTE: No assertions, so this is just a smoke-test (ensure the code runs without an exception)
     end
 
-    context "not updated at all" do
-      it "logs that it's not updated to the latest" do
+    context "gem not updated" do
+      before(:each) do
         allow(updater).to receive(:bundled_version_for).with(gem).and_return installed_version
         mock_system_log_commit_puts
+      end
 
+      it "logs that it was not updated" do
         updater.update_gem(gem, 0)
 
         expect(updater).to have_received(:log).with("#{gem[:name]} not updated")
       end
 
       it "doesn't commit anything" do
-        allow(updater).to receive(:bundled_version_for).with(gem).and_return installed_version
-        mock_system_log_commit_puts
-
         updater.update_gem(gem, 0)
 
         expect(git).to_not have_received(:commit)
       end
     end
 
-    context "not updated to the newest version" do
+    context "gem not updated to the newest version" do
       before(:each) do
-        allow(updater).to receive(:bundled_version_for).with(gem).and_return(
-          intermediate_version
-        )
+        allow(updater).to receive(:bundled_version_for).with(gem).and_return intermediate_version
+        mock_system_log_commit_puts
       end
 
       it "logs that it's not updated to the latest" do
         not_latest_message =
           "#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}"
-        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -103,7 +102,6 @@ describe Bummr::Updater do
 
         allow(git).to receive(:add)
         allow(git).to receive(:files_staged?).and_return true
-        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -114,9 +112,10 @@ describe Bummr::Updater do
       end
     end
 
-    context "updated the gem to the latest" do
+    context "gem updated to the latest" do
       before(:each) do
-        allow(updater).to receive(:bundled_version_for).and_return newest_version
+        allow(updater).to receive(:bundled_version_for).with(gem).and_return newest_version
+        mock_system_log_commit_puts
       end
 
       it "commits" do
@@ -125,7 +124,6 @@ describe Bummr::Updater do
 
         allow(git).to receive(:add)
         allow(git).to receive(:files_staged?).and_return true
-        mock_system_log_commit_puts
 
         updater.update_gem(gem, 0)
 
@@ -136,6 +134,8 @@ describe Bummr::Updater do
       end
     end
   end # end #update_gem
+
+  # ----------------
 
   describe "#bundled_version_for" do
     it "returns the correct version from bundle list" do
