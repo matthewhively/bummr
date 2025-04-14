@@ -74,10 +74,28 @@ describe Bummr::Updater do
         expect(updater).to have_received(:log).with("#{gem[:name]} not updated")
       end
 
-      it "doesn't commit anything" do
-        updater.update_gem(gem, 0)
+      context "and no dependencies were updated" do
+        it "doesn't commit anything" do
+          updater.update_gem(gem, 0)
 
-        expect(git).to_not have_received(:commit)
+          expect(git).to_not have_received(:commit)
+        end
+      end
+      context "and dependencies were updated" do
+        it "commits" do
+          commit_message =
+            "Update #{gem[:name]} dependencies"
+
+          allow(git).to receive(:add)
+          allow(git).to receive(:files_staged?).and_return true
+
+          updater.update_gem(gem, 0)
+
+          expect(git).to have_received(:add).with("Gemfile")
+          expect(git).to have_received(:add).with("Gemfile.lock")
+          expect(git).to have_received(:add).with("vendor/cache")
+          expect(git).to have_received(:commit).with(commit_message)
+        end
       end
     end
 
