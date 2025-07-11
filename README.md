@@ -1,8 +1,5 @@
 # Bummr
 
-[![Code Climate](https://codeclimate.com/github/lpender/bummr/badges/gpa.svg)](https://codeclimate.com/github/lpender/bummr)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/52d6651bf8cd5e729b11/test_coverage)](https://codeclimate.com/github/lpender/bummr/test_coverage)
-
 Updating Gems one by one is a bumm(e)r: especially when one gem causes your build
 to fail.
 
