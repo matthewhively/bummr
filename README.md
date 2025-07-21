@@ -1,15 +1,12 @@
 # Bummr
 
-[![Code Climate](https://codeclimate.com/github/lpender/bummr/badges/gpa.svg)](https://codeclimate.com/github/lpender/bummr)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/52d6651bf8cd5e729b11/test_coverage)](https://codeclimate.com/github/lpender/bummr/test_coverage)
-
 Updating Gems one by one is a bumm(e)r: especially when one gem causes your build
 to fail.
 
 Gems should be updated in [separate commits](https://thoughtbot.com/blog/keep-your-gems-up-to-date).
 
 The bummr gem allows you to automatically update all gems which pass your
-build in separate commits, and logs the name and sha of each gem that fails.
+build in separate commits, and logs the name and sha of any gem update that fails your build.
 
 Bummr assumes you have good test coverage and follow a [pull-request workflow].
 
