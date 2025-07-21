@@ -19,6 +19,15 @@ describe Bummr::CLI do
     ]
   }
 
+  describe "#version" do
+    it "prints the bummr version" do
+      expect(cli).to receive(:puts).with("Bummr #{Bummr::VERSION}")
+
+      cli.version
+    end
+    # See also black_box/bummr_version_spec.rb
+  end
+
   describe "#update" do
     context "when user rejects moving forward" do
       it "does not attempt to move forward" do
@@ -39,6 +48,7 @@ describe Bummr::CLI do
         expect(cli).to receive(:yes?).and_return(true)
         expect(cli).to receive(:check)
         expect(cli).to receive(:log)
+        expect(cli).to receive(:press_any_key) # NOOP this function call
         expect(cli).to receive(:system).with("bundle install")
         expect(Bummr::Updater).to receive(:new).with(outdated_gems).and_return updater
         expect(cli).to receive(:test)
@@ -182,4 +192,5 @@ describe Bummr::CLI do
       expect(bisecter).to have_received(:bisect)
     end
   end
+
 end

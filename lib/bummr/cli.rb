@@ -8,6 +8,13 @@ module Bummr
     include Bummr::Prompt
     include Bummr::Scm
 
+    desc 'version', '(-v, --version) Display the current version of the gem'
+    map %w[-v --version] => :version
+
+    def version
+      puts "Bummr #{VERSION}"
+    end
+
     # :nocov: internals are tested by spec/check_spec.rb
     desc "check", "Run automated checks to see if bummr can be run"
     def check(fullcheck=true)
@@ -45,8 +52,10 @@ module Bummr
         else
           Bummr::Updater.new(outdated_gems).update_outdated_gems
 
+          press_any_key("Press any key to start an interactive rebase to adjust the updated gem commits...")
           git.rebase_interactive(BASE_BRANCH)
-          test
+
+          test unless TEST_COMMAND.empty?
         end
       else
         puts "Thank you!".color(:green)
@@ -91,7 +100,7 @@ module Bummr
 
     # :nocov: This is stubbed out during actual testing because its boilerplate information for the user
     def display_info
-      puts "Bummr #{VERSION}"
+      puts version
       puts "To run Bummr, you must:"
       puts "- Be in the root path of a clean git branch off of " + "#{BASE_BRANCH}".color(:yellow)
       puts "- Have no commits or local changes"
@@ -99,8 +108,10 @@ module Bummr
       puts "- Have your build configured to fail fast (recommended)"
       puts "- Have locked any Gem version that you don't wish to update in your Gemfile"
       puts "- It is recommended that you lock your versions of 'ruby' and 'rails' in your 'Gemfile'"
-      puts "\n"
-      puts "Your test command is: " + "'#{TEST_COMMAND}'".color(:yellow)
+      unless TEST_COMMAND.empty?
+        puts "\n"
+        puts "Your test command is: " + "'#{TEST_COMMAND}'".color(:yellow)
+      end
       puts "\n"
       print_received_options
     end

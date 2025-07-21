@@ -6,6 +6,7 @@ describe "bummr update command" do
     puts "\n<< black_box/bummr_update_spec >>\n"
   end
 
+  # REM: the JetBlack session captures all STDOUT and STDERR output originating within the session
   let(:session) { JetBlack::Session.new(options: { clean_bundler_env: true }) }
   let(:bummr_gem_path) { File.expand_path("../../", __dir__) }
 
@@ -43,9 +44,14 @@ describe "bummr update command" do
 
     update_result = session.run(
       "bundle exec bummr update",
-      stdin: "y\ny\ny\n",
+      # yes start bummr
+      # yes bypass errors
+      # yes test build
+      stdin: ['y', 'y', 'y', ''].join("\n"),
       env: { EDITOR: nil, BUMMR_HEADLESS: "true" },
     )
+    # Debugging
+    #puts update_result.stdout
 
     rake_gem_updated = /Update rake from 10\.\d\.\d to 1[1-9]\.\d\.\d/
 
