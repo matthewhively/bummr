@@ -4,7 +4,7 @@ module Bummr
     include Log
 
     def initialize
-      @git_commit = ENV.fetch("BUMMR_GIT_COMMIT") { "git commit" }
+      @git_commit = ENV.fetch("BUMMR_GIT_COMMIT") { Bummr::DEFAULT_GIT_COMMIT_CMD }
     end
 
     def add(files)

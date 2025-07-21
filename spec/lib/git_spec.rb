@@ -37,20 +37,20 @@ describe Bummr::Git do
       git.commit(commit_message)
 
       expect(git).to have_received(:system).with(
-        "git commit -m '#{commit_message}'"
+        "#{Bummr::DEFAULT_GIT_COMMIT_CMD} -m '#{commit_message}'"
       )
     end
 
     describe "when BUMMR_GIT_COMMIT is defined" do
       it "commits using defined value" do
-        allow(ENV).to receive(:fetch).with("BUMMR_GIT_COMMIT").and_return("git commit --no-verify")
+        allow(ENV).to receive(:fetch).with("BUMMR_GIT_COMMIT").and_return("#{Bummr::DEFAULT_GIT_COMMIT_CMD} --no-verify")
         git = stub_git
         commit_message = "Update Foo from 0.0.1 to 0.0.2"
 
         git.commit(commit_message)
 
         expect(git).to have_received(:system).with(
-          "git commit --no-verify -m '#{commit_message}'"
+          "#{Bummr::DEFAULT_GIT_COMMIT_CMD} --no-verify -m '#{commit_message}'"
         )
       end
     end
