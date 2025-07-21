@@ -9,13 +9,15 @@ module Bummr
     def outdated_gems(options = {})
       results = []
 
-      bundle_options =  ""
-      bundle_options << " --parseable" if Gem::Version.new(Bundler::VERSION) >= Gem::Version.new("2")
-      bundle_options << " --strict" unless options[:all_gems]
-      bundle_options << " --group #{options[:group]}" if options[:group]
-      bundle_options << " #{options[:gem]}" if options[:gem]
+      bundle_options = []
+      bundle_options << "--parseable" if Gem::Version.new(Bundler::VERSION) >= Gem::Version.new("2")
+      bundle_options << "--strict" unless options[:all_gems]
+      bundle_options << "--group #{options[:group]}" if options[:group]
+      bundle_options << "#{options[:gem]}" if options[:gem]
 
-      Open3.popen2("bundle outdated" + bundle_options) do |_std_in, std_out|
+      cmd = "bundle outdated #{bundle_options.join(' ')}"
+      puts "Find Outdated Gems: '#{cmd}'"
+      Open3.popen2(cmd) do |_std_in, std_out|
         while line = std_out.gets
           puts line # TODO: remove this if possible (pointless for spec tests)
           gem = parse_gem_from(line)

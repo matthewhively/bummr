@@ -69,9 +69,12 @@ describe Bummr::Updater do
       end
 
       it "logs that it was not updated" do
+        cannot_update_message =
+          "Updating #{gem[:name]} cannot be completed"
+
         updater.update_gem(gem, 0)
 
-        expect(updater).to have_received(:log).with("#{gem[:name]} not updated")
+        expect(updater).to have_received(:log).with(cannot_update_message)
       end
 
       context "and no dependencies were updated" do
@@ -107,11 +110,11 @@ describe Bummr::Updater do
 
       it "logs that it's not updated to the latest" do
         not_latest_message =
-          "#{gem[:name]} not updated from #{gem[:installed]} to latest: #{gem[:newest]}"
+          "Newer #{gem[:name]} installed - updated from #{gem[:installed]} to #{intermediate_version} (latest: #{gem[:newest]})"
 
         updater.update_gem(gem, 0)
 
-        expect(updater).to have_received(:log).with not_latest_message
+        expect(updater).to have_received(:log).with(not_latest_message)
       end
 
       it "commits" do
@@ -134,6 +137,15 @@ describe Bummr::Updater do
       before(:each) do
         allow(updater).to receive(:bundled_version_for).with(gem).and_return newest_version
         mock_system_log_commit_puts
+      end
+
+      it "logs that was updated to the latest" do
+        latest_message =
+          "Latest #{gem[:name]} installed - updated from #{gem[:installed]} to #{gem[:newest]}"
+
+        updater.update_gem(gem, 0)
+
+        expect(updater).to have_received(:log).with(latest_message)
       end
 
       it "commits" do
